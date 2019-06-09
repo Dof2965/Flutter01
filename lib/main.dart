@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:myapp/compass/results.dart';
 import 'dart:convert';
-import 'employee.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    outputJson();
+    api();
     return MaterialApp(
       title: 'Startup Name Generator',
       theme: ThemeData(
@@ -17,18 +18,27 @@ class MyApp extends StatelessWidget {
       home: RandomWords(),
     );
   }
-  
-  void outputJson() {
-    String orgJson = '{"id":1000,"firstName":"ryuichi","lastName":"daigo"}';
-    debugPrint('オリジナルJSON文字列: $orgJson');
 
-    var mapEmployee = json.decode(orgJson);
-    var employee = Employee.fromJson(mapEmployee);
-    debugPrint(
-        'JSON→Employeeデシリアライズしたオブジェクト: id: ${employee.id}, firstName: ${employee.firstName}, lastName: ${employee.lastName}');
+  void api() async {
+    // var url = "https://www.googleapis.com/books/v1/volumes?q={http}";
+    var url = "https://connpass.com/api/v1/event/";
+    // Await the http get response, then decode the json-formatted responce.
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      var result = Results.fromJson(jsonResponse);
+      var itemCount = jsonResponse['results_returned'];
+      debugPrint("Number of events about http: $itemCount.");
+      debugPrint(
+          "result.results_available:" + result.results_available.toString());
+      debugPrint("result -> " + result.events[0].description);
+      // var serializedJson = json.encode(employee.toJson());
+      // debugPrint('再度Employee→JSONシリアライズした文字列: $serializedJson');
 
-    var serializedJson = json.encode(employee.toJson());
-    debugPrint('再度Employee→JSONシリアライズした文字列: $serializedJson');
+    } else {
+      print("Request failed with status: ${response.statusCode}.");
+      debugPrint("Request failed with status: ${response.statusCode}.");
+    }
   }
 }
 
@@ -90,7 +100,6 @@ class RandomWordsState extends State<RandomWords> {
   void _pushSaved() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        // Add 20 lines from here...
         builder: (BuildContext context) {
           final Iterable<ListTile> tiles = _saved.map(
             (WordPair pair) {
@@ -108,12 +117,11 @@ class RandomWordsState extends State<RandomWords> {
           ).toList();
 
           return Scaffold(
-            // Add 6 lines from here...
             appBar: AppBar(
               title: Text('Saved Suggestions'),
             ),
             body: ListView(children: divided),
-          ); // ... to here.
+          );
         },
       ),
     );
