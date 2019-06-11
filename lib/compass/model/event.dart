@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'events.g.dart';
+part 'event.g.dart';
 
 @JsonSerializable()
-class Events {
-  Events(
+class Event {
+  Event(
       this.event_id,
       this.title,
       this.catchcopy,
@@ -47,6 +47,6 @@ class Events {
   int waiting;
   String updated_at;
 
-  factory Events.fromJson(Map<String, dynamic> json) => _$EventsFromJson(json);
-  Map<String, dynamic> toJson() => _$EventsToJson(this);
+  factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+  Map<String, dynamic> toJson() => _$EventToJson(this);
 }

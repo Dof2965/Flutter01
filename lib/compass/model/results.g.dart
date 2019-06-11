@@ -13,7 +13,7 @@ Results _$ResultsFromJson(Map<String, dynamic> json) {
       json['results_start'] as int,
       (json['events'] as List)
           ?.map((e) =>
-              e == null ? null : Events.fromJson(e as Map<String, dynamic>))
+              e == null ? null : Event.fromJson(e as Map<String, dynamic>))
           ?.toList());
 }
 

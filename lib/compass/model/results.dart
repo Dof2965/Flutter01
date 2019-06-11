@@ -1,17 +1,20 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'event.dart';
 
-part 'employee.g.dart';
+part 'results.g.dart';
 
 @JsonSerializable()
-class Employee {
-  Employee(this.id, this.firstName, this.lastName);
+class Results {
+  Results(this.results_returned, this.results_available, this.results_start,
+      this.events);
+  int results_returned;
+  int results_available;
+  int results_start;
+  List<Event> events = <Event>[];
 
-  int id;
-  String firstName;
-  String lastName;
-  
-  factory Employee.fromJson(Map<String, dynamic> json) => _$EmployeeFromJson(json);
-  Map<String, dynamic> toJson() => _$EmployeeToJson(this);
+  factory Results.fromJson(Map<String, dynamic> json) =>
+      _$ResultsFromJson(json);
+  Map<String, dynamic> toJson() => _$ResultsToJson(this);
 }
 /*
 please exec "flutter packages pub run build_runner build" after change code.

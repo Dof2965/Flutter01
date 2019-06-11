@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'events.dart';
+part of 'event.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Events _$EventsFromJson(Map<String, dynamic> json) {
-  return Events(
+Event _$EventFromJson(Map<String, dynamic> json) {
+  return Event(
       json['event_id'] as int,
       json['title'] as String,
       json['catch'] as String,
@@ -28,10 +28,10 @@ Events _$EventsFromJson(Map<String, dynamic> json) {
       json['updated_at'] as String);
 }
 
-Map<String, dynamic> _$EventsToJson(Events instance) => <String, dynamic>{
+Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'event_id': instance.event_id,
       'title': instance.title,
-      'catchcopy': instance.catchcopy,
+      'catch': instance.catchcopy,
       'description': instance.description,
       'event_url': instance.event_url,
       'hash_tag': instance.hash_tag,

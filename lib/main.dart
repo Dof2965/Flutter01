@@ -1,44 +1,118 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:myapp/compass/results.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'compass/client/compass_client.dart';
+import 'compass/model/event.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    api();
-    return MaterialApp(
-      title: 'Startup Name Generator',
-      theme: ThemeData(
-        primaryColor: Colors.white,
+    return new MaterialApp(
+      // app titile
+      title: 'Event Search App',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      home: RandomWords(),
+      home: new EventSeacher(title: 'Event Search'),
+    );
+  }
+}
+
+// caller
+class EventSeacher extends StatefulWidget {
+  EventSeacher({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _EventSeacherState createState() => new _EventSeacherState();
+}
+
+
+class _EventSeacherState extends State<EventSeacher> {
+
+  List<Event> _items;
+
+  // TODO: What is Key?
+  var _listViewKey = new Key('ListView');
+
+  // TextArea Controller
+  final TextEditingController _controller = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    // Search Result
+    var listView = new ListView(
+      key: _listViewKey,
+      itemExtent: 50.0,
+      children: _createWidgets(_items),
+    );
+
+    // View area
+    var container = new Container(
+        height: 500.0,
+        child: listView
+    );
+
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(widget.title),
+      ),
+      body: new Center(
+        child: new ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          children: <Widget>[
+            new TextField(
+              decoration: const InputDecoration(
+                hintText: 'Flutter',
+                labelText: 'Query',
+              ),
+              maxLines: 1,
+              controller: _controller,
+            ),
+            new Container(
+              padding: const EdgeInsets.all(20.0),
+              child: new RaisedButton(
+                child: const Text('Search'),
+                onPressed: _search,
+              ),
+            ),
+            container,
+          ],
+        ),
+      ),
     );
   }
 
-  void api() async {
-    // var url = "https://www.googleapis.com/books/v1/volumes?q={http}";
-    var url = "https://connpass.com/api/v1/event/";
-    // Await the http get response, then decode the json-formatted responce.
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      var result = Results.fromJson(jsonResponse);
-      var itemCount = jsonResponse['results_returned'];
-      debugPrint("Number of events about http: $itemCount.");
-      debugPrint(
-          "result.results_available:" + result.results_available.toString());
-      debugPrint("result -> " + result.events[0].description);
-      // var serializedJson = json.encode(employee.toJson());
-      // debugPrint('再度Employee→JSONシリアライズした文字列: $serializedJson');
+  void _search() {
+    // TODO: Create common service client.
+    var client = new CompassClient();
+    client.get(_controller.text).then((result) {
+      setState(() {
+        // TODO: get count, available, start.
+        _items = result.events;
+      });
+    });
+  }
 
-    } else {
-      print("Request failed with status: ${response.statusCode}.");
-      debugPrint("Request failed with status: ${response.statusCode}.");
+  Iterable<Widget> _createWidgets(List<Event> items) {
+    var ret = new List<Widget>();
+    if (items == null) {
+      return ret;
     }
+    items.forEach((item) {
+      ret.add(
+          new ListTile(
+            // TODO: Read icon?
+            // leading: new CircleAvatar(
+            //   backgroundImage: new NetworkImage(item.avatarUrl),
+            // ),
+            title: new Text('${item.title} :  ${item.accepted}/${item.limit}'),
+          )
+      );
+    });
+    return ret;
   }
 }
 
