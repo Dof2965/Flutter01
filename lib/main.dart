@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'compass/client/compass_client.dart';
 import 'compass/model/event.dart';
+import 'compass/model/query_string.dart';
 
 void main() => runApp(MyApp());
 
@@ -88,7 +89,10 @@ class _EventSeacherState extends State<EventSeacher> {
   void _search() {
     // TODO: Create common service client.
     var client = new CompassClient();
-    client.get(_controller.text).then((result) {
+    var query = new QueryString();
+    query.keyword = _controller.text;
+
+    client.get(query.get(0)).then((result) {
       setState(() {
         // TODO: get count, available, start.
         _items = result.events;
@@ -104,7 +108,7 @@ class _EventSeacherState extends State<EventSeacher> {
     items.forEach((item) {
       ret.add(
           new ListTile(
-            // TODO: Read icon?
+            // Read icon?
             // leading: new CircleAvatar(
             //   backgroundImage: new NetworkImage(item.avatarUrl),
             // ),
