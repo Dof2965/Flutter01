@@ -30,9 +30,7 @@ class EventSeacher extends StatefulWidget {
   _EventSeacherState createState() => new _EventSeacherState();
 }
 
-
 class _EventSeacherState extends State<EventSeacher> {
-
   List<Event> _items;
 
   // TODO: What is Key?
@@ -50,11 +48,8 @@ class _EventSeacherState extends State<EventSeacher> {
       children: _createWidgets(_items),
     );
 
-    // View area
-    var container = new Container(
-        height: 500.0,
-        child: listView
-    );
+    // Search result view area
+    var container = new Container(height: 500.0, child: listView);
 
     return new Scaffold(
       appBar: new AppBar(
@@ -64,6 +59,7 @@ class _EventSeacherState extends State<EventSeacher> {
         child: new ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
+            // Textarea
             new TextField(
               decoration: const InputDecoration(
                 hintText: 'Flutter',
@@ -72,6 +68,7 @@ class _EventSeacherState extends State<EventSeacher> {
               maxLines: 1,
               controller: _controller,
             ),
+            // Button Container
             new Container(
               padding: const EdgeInsets.all(20.0),
               child: new RaisedButton(
@@ -106,20 +103,18 @@ class _EventSeacherState extends State<EventSeacher> {
       return ret;
     }
     items.forEach((item) {
-      ret.add(
-          new ListTile(
-            // Read icon?
-            // leading: new CircleAvatar(
-            //   backgroundImage: new NetworkImage(item.avatarUrl),
-            // ),
-            title: new Text('${item.title} :  ${item.accepted}/${item.limit}'),
-          )
-      );
+      ret.add(new ListTile(
+        // Read icon?
+        // leading: new CircleAvatar(
+        //   backgroundImage: new NetworkImage(item.avatarUrl),
+        // ),
+        title: new Text('${item.title} :  ${item.accepted}/${item.limit}'),
+      ));
     });
     return ret;
   }
 }
-
+//-------------------------------------------------------------
 // proc
 class RandomWordsState extends State<RandomWords> {
   final List<WordPair> _suggestions = <WordPair>[];
@@ -134,17 +129,17 @@ class RandomWordsState extends State<RandomWords> {
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
         ],
       ),
-      body: _buildSuggestions(),
+      body: _buildContents(),
     );
   }
 
-  Widget _buildSuggestions() {
+  Widget _buildContents() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
 
-          final index = i ~/ 2; /*3*/
+          final index = i ~/ 2;
           if (index >= _suggestions.length) {
             _suggestions.addAll(generateWordPairs().take(10)); /*4*/
           }
