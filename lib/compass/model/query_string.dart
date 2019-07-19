@@ -26,6 +26,9 @@ class QueryString {
     if (ym != null && firstNum != 0) {
       query += "start=" + firstNum.toString() + "&";
     }
+    if (count != null && count != 0) {
+      query += "count=" + count.toString() + "&";
+    }
     return query;
   }
 }

@@ -88,7 +88,7 @@ class _EventSeacherState extends State<EventSeacher> {
     var client = new CompassClient();
     var query = new QueryString();
     query.keyword = _controller.text;
-
+    query.count = 30;
     client.get(query.get(0)).then((result) {
       setState(() {
         // TODO: get count, available, start.
