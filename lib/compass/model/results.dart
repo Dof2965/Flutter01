@@ -7,8 +7,11 @@ part 'results.g.dart';
 class Results {
   Results(this.results_returned, this.results_available, this.results_start,
       this.events);
+  // ignore: non_constant_identifier_names
   int results_returned;
+  // ignore: non_constant_identifier_names
   int results_available;
+  // ignore: non_constant_identifier_names
   int results_start;
   List<Event> events = <Event>[];
 

@@ -1,11 +1,15 @@
 class QueryString {
+  // ignore: non_constant_identifier_names
   int event_id;
   String keyword;
+  // ignore: non_constant_identifier_names
   String keyword_or;
   int ym;
   int ymd;
   String nickname;
+  // ignore: non_constant_identifier_names
   String owner_nickname;
+  // ignore: non_constant_identifier_names
   int series_id;
   // int start;
   int order;

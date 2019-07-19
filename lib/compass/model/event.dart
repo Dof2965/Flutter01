@@ -23,15 +23,21 @@ class Event {
       this.accepted,
       this.waiting,
       this.updated_at);
+  // ignore: non_constant_identifier_names
   int event_id;
   String title;
   String catchcopy;
   String description;
+  // ignore: non_constant_identifier_names
   String event_url;
+  // ignore: non_constant_identifier_names
   String hash_tag;
+  // ignore: non_constant_identifier_names
   String started_at;
+  // ignore: non_constant_identifier_names
   String ended_at;
   int limit;
+  // ignore: non_constant_identifier_names
   String event_type;
   // series 後でクラス作成。
   String address;
@@ -40,11 +46,15 @@ class Event {
   // double lat;
   // 開催会場の経度
   // double lon;
+  // ignore: non_constant_identifier_names
   int owner_id;
+  // ignore: non_constant_identifier_names
   String owner_nickname;
+  // ignore: non_constant_identifier_names
   String owner_display_name;
   int accepted;
   int waiting;
+  // ignore: non_constant_identifier_names
   String updated_at;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
