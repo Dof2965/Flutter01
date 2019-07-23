@@ -88,13 +88,41 @@ class _EventSeacherState extends State<EventSeacher> {
     var client = new CompassClient();
     var query = new QueryString();
     query.keyword = _controller.text;
-    query.count = 30;
+    query.count = 100;
     client.get(query.get(0)).then((result) {
       setState(() {
         // TODO: get count, available, start.
-        _items = result.events;
+        _items = result.events.where((e) => _isContent(e)).toList();
       });
     });
+  }
+
+  bool _isContent(Event event) {
+    if (!_isNear(event)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _isNear(Event event) {
+    // Delete post number and space.
+    if (event.address == null || event.address.length <= 0) { 
+      return true;
+    } 
+    String str = event.address.replaceAll(new RegExp(r'[0-9〒 　\-]'), '');
+    // TODO: もっと改善できない???
+    RegExp exp = new RegExp(
+        r"^(東京|神奈川|千代田区|中央区|港区|新宿区|文京区|台東区|墨田区|江東区|品川区|目黒区|大田区|世田谷区|渋谷区|中野区|杉並区|豊島区|北区|荒川区|板橋区|練馬区|足立区|葛飾区|江戸川区)");
+    // _debugConsole("address: " + str + " : "+ exp.hasMatch(str).toString());
+    if (!exp.hasMatch(str)) {
+      return false;
+    }
+    return true;
+  }
+
+  void _debugConsole(String str) {
+    // debugPrint(utf8.encode(str).toString());
+    debugPrint(str);
   }
 
   Iterable<Widget> _createWidgets(List<Event> items) {
@@ -103,17 +131,20 @@ class _EventSeacherState extends State<EventSeacher> {
       return ret;
     }
     items.forEach((item) {
+      String address = item.address == null ? "" : ': ${item.address}';
       ret.add(new ListTile(
         // Read icon?
         // leading: new CircleAvatar(
         //   backgroundImage: new NetworkImage(item.avatarUrl),
         // ),
-        title: new Text('${item.title} :  ${item.accepted}/${item.limit}'),
+        // title: new Text('${item.title} :  ${item.accepted}/${item.limit}'),
+        title: new Text('${item.title} ' + address),
       ));
     });
     return ret;
   }
 }
+
 //-------------------------------------------------------------
 // proc
 class RandomWordsState extends State<RandomWords> {

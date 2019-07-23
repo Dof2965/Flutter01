@@ -7,7 +7,8 @@ import '../model/results.dart';
 
 class CompassClient {
   void _debugConsole(String str) {
-    debugPrint(utf8.encode(str).toString());
+    // debugPrint(utf8.encode(str).toString());
+    debugPrint(str);
   }
 
   Future<Results> get(String query) async {
